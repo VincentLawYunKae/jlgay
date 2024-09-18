@@ -67,11 +67,11 @@ def handle_mode1():
     """
     for waypoint navigation
     """
-    global left_disp, right_disp, linear_speed, turn_speed, motion, motion_queue
+    global motion_queue
     while True:
         # print("motion", motion)
         try:
-            motion = motion_queue.pop(0)
+            motion, left_disp, right_disp = motion_queue.pop(0)
         except:
             motion = "stop"
         finally:
@@ -79,7 +79,7 @@ def handle_mode1():
                 # print("Enter here finally")
                 left_encoder.reset()
                 right_encoder.reset()
-                # the 2 is the experimental value
+                # the 5 is the experimental value
                 while (left_encoder.value + right_encoder.value) < (left_disp + right_disp-5):
                     pibot.value = (linear_speed, linear_speed)
                 pibot.value = (0, 0)
@@ -161,7 +161,7 @@ def set_disp():
     elif (left_disp < 0 and right_disp < 0):
         motion = 'backward'
     if motion != 'stop':
-        motion_queue.append(motion)
+        motion_queue.append((motion, left_disp, right_disp))
     print("The motion now is", motion)
     return motion
 
