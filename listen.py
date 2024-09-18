@@ -70,26 +70,29 @@ def handle_mode1():
     global left_disp, right_disp, linear_speed, turn_speed, motion, motion_queue
     while True:
         # print("motion", motion)
-        motion = motion_queue.pop(0)
-        if motion == "forward":
-            # print("Enter here finally")
-            left_encoder.reset()
-            right_encoder.reset()
-            # the 2 is the experimental value
-            while (left_encoder.value + right_encoder.value) < (left_disp + right_disp-5):
-                pibot.value = (linear_speed, linear_speed)
-            pibot.value = (0, 0)
-            print('Value', left_encoder.value, right_encoder.value)
-        elif motion == "backward":
-            left_encoder.reset()
-            right_encoder.reset()
-            # the 2 is the experimental value
-            while (left_encoder.value + right_encoder.value) < abs((left_disp + right_disp-5)):
-                pibot.value = (-linear_speed, -linear_speed)
-            pibot.value = (0, 0)
-            print('Value', left_encoder.value, right_encoder.value)
-        
-        motion = "stop"
+        try:
+            motion = motion_queue.pop(0)
+        except:
+            motion = "stop"
+        finally:
+            if motion == "forward":
+                # print("Enter here finally")
+                left_encoder.reset()
+                right_encoder.reset()
+                # the 2 is the experimental value
+                while (left_encoder.value + right_encoder.value) < (left_disp + right_disp-5):
+                    pibot.value = (linear_speed, linear_speed)
+                pibot.value = (0, 0)
+                print('Value', left_encoder.value, right_encoder.value)
+            elif motion == "backward":
+                left_encoder.reset()
+                right_encoder.reset()
+                # the 2 is the experimental value
+                while (left_encoder.value + right_encoder.value) < abs((left_disp + right_disp-5)):
+                    pibot.value = (-linear_speed, -linear_speed)
+                pibot.value = (0, 0)
+                print('Value', left_encoder.value, right_encoder.value)
+
         
         if drive_mode == 0:
             break
