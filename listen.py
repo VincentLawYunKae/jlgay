@@ -142,6 +142,7 @@ def set_disp():
         motion = 'forward'
     elif (left_disp < 0 and right_disp < 0):
         motion = 'backward'
+    print("The motion now is", motion)
     return motion
 
 @app.route('/mode')
