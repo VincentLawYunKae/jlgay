@@ -27,9 +27,10 @@ class Encoder(object):
     def value(self):
         return self._value
         
-
-# main function to control the robot wheels
-def move_robot():
+def handle_mode0():
+    """
+    for self-driving mode
+    """
     global use_pid, left_speed, right_speed
     flag_new_pid_cycle = True
     while True:
@@ -58,6 +59,21 @@ def move_robot():
                 # print('Value', left_encoder.value, right_encoder.value)
                 # print('Speed', left_speed, right_speed)
         time.sleep(0.005)
+
+
+def handle_mode1():
+    """
+    for waypoint navigation
+    """
+    pass
+
+# main function to control the robot wheels
+def move_robot():
+    if drive_mode == 0:
+        handle_mode0()
+    else:
+        handle_mode1()
+    
     
     
 # Receive confirmation whether to use pid or not to control the wheels (forward & backward)
@@ -104,6 +120,10 @@ def set_disp():
     if (left_disp == 0 and right_disp == 0):
         motion = 'stop'
     elif (left_disp != right_disp ):
+        if left_disp > right_disp:
+            motion = 'right'
+        else:
+            motion = 'left'
         motion = 'turning'
     elif (left_disp > 0 and right_disp > 0):
         motion = 'forward'
@@ -114,7 +134,7 @@ def set_disp():
 @app.route('/drive_mode')
 def set_mode():
     global drive_mode 
-    drive_mode = request.args.get('drive_mode')
+    drive_mode = int(request.args.get('drive_mode'))
     return drive_mode
     
 
@@ -140,6 +160,7 @@ ki = 0
 kd = 0
 left_speed, right_speed = 0, 0
 motion = ''
+drive_mode = 0
 
 # Initialize the PiCamera
 picam2 = Picamera2()
