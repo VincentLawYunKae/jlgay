@@ -69,6 +69,7 @@ def handle_mode1():
     """
     global left_disp, right_disp, linear_speed, turn_speed, motion
     if motion == "forward":
+        print("Enter here finally")
         left_encoder.reset()
         right_encoder.reset()
         while (left_encoder + right_encoder) < (left_disp + right_disp):
@@ -78,7 +79,7 @@ def handle_mode1():
 
 # main function to control the robot wheels
 def move_robot():
-    print("mode", drive_mode)
+    # print("mode", drive_mode)
     if drive_mode == 0:
         handle_mode0()
     else:
@@ -176,7 +177,7 @@ right_speed = 0
 linear_speed = 0.7
 turn_speed = 0.6
 motion = ''
-drive_mode = 0
+drive_mode = 1
 
 # Initialize the PiCamera
 picam2 = Picamera2()
