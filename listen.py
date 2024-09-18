@@ -67,15 +67,16 @@ def handle_mode1():
     """
     for waypoint navigation
     """
-    global left_disp, right_disp, linear_speed, turn_speed, motion
+    global left_disp, right_disp, linear_speed, turn_speed, motion, motion_queue
     while True:
         # print("motion", motion)
+        motion = motion_queue.pop(0)
         if motion == "forward":
             # print("Enter here finally")
             left_encoder.reset()
             right_encoder.reset()
             # the 2 is the experimental value
-            while (left_encoder.value + right_encoder.value) < (left_disp + right_disp-3):
+            while (left_encoder.value + right_encoder.value) < (left_disp + right_disp-5):
                 pibot.value = (linear_speed, linear_speed)
             pibot.value = (0, 0)
             print('Value', left_encoder.value, right_encoder.value)
@@ -83,7 +84,7 @@ def handle_mode1():
             left_encoder.reset()
             right_encoder.reset()
             # the 2 is the experimental value
-            while (left_encoder.value + right_encoder.value) < abs((left_disp + right_disp-3)):
+            while (left_encoder.value + right_encoder.value) < abs((left_disp + right_disp-5)):
                 pibot.value = (-linear_speed, -linear_speed)
             pibot.value = (0, 0)
             print('Value', left_encoder.value, right_encoder.value)
@@ -143,7 +144,7 @@ def move():
 
 @app.route('/disp')
 def set_disp():
-    global left_disp, right_disp, motion
+    global left_disp, right_disp, motion, motion_queue
     left_disp, right_disp = int(request.args.get('left_disp')), int(request.args.get('right_disp'))
     if (left_disp == 0 and right_disp == 0):
         motion = 'stop'
@@ -152,11 +153,12 @@ def set_disp():
             motion = 'right'
         else:
             motion = 'left'
-        motion = 'turning'
     elif (left_disp > 0 and right_disp > 0):
         motion = 'forward'
     elif (left_disp < 0 and right_disp < 0):
         motion = 'backward'
+    if motion != 'stop':
+        motion_queue.append(motion)
     print("The motion now is", motion)
     return motion
 
@@ -195,6 +197,7 @@ linear_speed = 0.7
 turn_speed = 0.6
 motion = ''
 drive_mode = 1
+motion_queue = []
 
 # Initialize the PiCamera
 picam2 = Picamera2()
