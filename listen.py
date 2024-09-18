@@ -59,6 +59,8 @@ def handle_mode0():
                 # print('Value', left_encoder.value, right_encoder.value)
                 # print('Speed', left_speed, right_speed)
         time.sleep(0.005)
+        if drive_mode == 1:
+            break
 
 
 def handle_mode1():
