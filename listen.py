@@ -89,11 +89,11 @@ def handle_mode1():
                 pibot.value = (0, 0)
                 
             elif motion == "left":
-                while (left_encoder.value < abs(left_disp)) or (right_encoder.value < abs(right_disp)):
+                while (left_encoder.value < abs(left_disp)) and (right_encoder.value < abs(right_disp)):
                     pibot.value = (-turn_speed, turn_speed)
                 pibot.value = (0, 0)
             elif motion == "right":
-                while (left_encoder.value < abs(left_disp)) or (right_encoder.value < abs(right_disp)):
+                while (left_encoder.value < abs(left_disp)) and (right_encoder.value < abs(right_disp)):
                     pibot.value = (turn_speed, -turn_speed)
                 pibot.value = (0, 0)
             if motion != "stop":
