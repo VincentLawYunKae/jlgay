@@ -69,7 +69,7 @@ def handle_mode1():
     """
     global left_disp, right_disp, linear_speed, turn_speed, motion
     if motion == "forward":
-        print("Enter here finally")
+        # print("Enter here finally")
         left_encoder.reset()
         right_encoder.reset()
         while (left_encoder + right_encoder) < (left_disp + right_disp):
@@ -83,7 +83,7 @@ def move_robot():
     if drive_mode == 0:
         handle_mode0()
     else:
-        print("motion", motion)
+        # print("motion", motion)
         handle_mode1()
     
     
