@@ -95,9 +95,28 @@ def move():
     elif (left_speed < 0 and right_speed < 0):
         motion = 'backward'
     return motion
-    
     # if 'time' in request.args:
 
+@app.route('/disp')
+def set_disp():
+    global left_disp, right_disp
+    left_disp, right_disp = float(request.args.get('left_disp')), float(request.args.get('right_disp'))
+    if (left_disp == 0 and right_disp == 0):
+        motion = 'stop'
+    elif (left_disp != right_disp ):
+        motion = 'turning'
+    elif (left_disp > 0 and right_disp > 0):
+        motion = 'forward'
+    elif (left_disp < 0 and right_disp < 0):
+        motion = 'backward'
+    return motion
+
+@app.route('/drive_mode')
+def set_mode():
+    global drive_mode 
+    drive_mode = request.args.get('drive_mode')
+    return drive_mode
+    
 
 # Constants
 in1 = 17 # may have to change this
