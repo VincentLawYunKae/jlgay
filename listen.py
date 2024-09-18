@@ -141,7 +141,7 @@ def set_disp():
 @app.route('/mode')
 def set_mode():
     global drive_mode 
-    drive_mode = request.args.get('mode')
+    drive_mode = int(request.args.get('mode'))
     print(drive_mode)
     return str(drive_mode)
     
