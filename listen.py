@@ -74,7 +74,8 @@ def handle_mode1():
             # print("Enter here finally")
             left_encoder.reset()
             right_encoder.reset()
-            while (left_encoder.value + right_encoder.value) < (left_disp + right_disp):
+            # the 2 is the experimental value
+            while (left_encoder.value + right_encoder.value) < (left_disp + right_disp-3):
                 pibot.value = (linear_speed, linear_speed)
             pibot.value = (0, 0)
             print('Value', left_encoder.value, right_encoder.value)
