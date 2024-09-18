@@ -78,6 +78,7 @@ def handle_mode1():
                 pibot.value = (linear_speed, linear_speed)
             pibot.value = (0, 0)
             print('Value', left_encoder.value, right_encoder.value)
+        motion = "stop"
 
 # main function to control the robot wheels
 def move_robot():
