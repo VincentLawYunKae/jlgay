@@ -69,7 +69,7 @@ def handle_mode1():
     """
     global left_disp, right_disp, linear_speed, turn_speed, motion
     while True:
-        print("motion", motion)
+        # print("motion", motion)
         if motion == "forward":
             # print("Enter here finally")
             left_encoder.reset()
