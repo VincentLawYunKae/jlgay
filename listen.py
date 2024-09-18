@@ -76,9 +76,11 @@ def handle_mode1():
 
 # main function to control the robot wheels
 def move_robot():
+    print("mode", drive_mode)
     if drive_mode == 0:
         handle_mode0()
     else:
+        print("motion", motion)
         handle_mode1()
     
     
