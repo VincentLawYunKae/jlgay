@@ -142,6 +142,7 @@ def set_disp():
 def set_mode():
     global drive_mode 
     drive_mode = int(request.args.get('drive_mode'))
+    print(drive_mode)
     return drive_mode
     
 
