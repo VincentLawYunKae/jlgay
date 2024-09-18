@@ -74,7 +74,7 @@ def handle_mode1():
             # print("Enter here finally")
             left_encoder.reset()
             right_encoder.reset()
-            while (left_encoder + right_encoder) < (left_disp + right_disp):
+            while (left_encoder.value + right_encoder.value) < (left_disp + right_disp):
                 pibot.value = (linear_speed, linear_speed)
             pibot.value(0, 0)
             print('Value', left_encoder.value, right_encoder.value)
@@ -129,8 +129,8 @@ def move():
 
 @app.route('/disp')
 def set_disp():
-    global left_disp, right_disp
-    left_disp, right_disp = float(request.args.get('left_disp')), float(request.args.get('right_disp'))
+    global left_disp, right_disp, motion
+    left_disp, right_disp = int(request.args.get('left_disp')), int(request.args.get('right_disp'))
     if (left_disp == 0 and right_disp == 0):
         motion = 'stop'
     elif (left_disp != right_disp ):
