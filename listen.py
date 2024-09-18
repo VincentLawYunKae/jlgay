@@ -76,7 +76,7 @@ def handle_mode1():
             right_encoder.reset()
             while (left_encoder.value + right_encoder.value) < (left_disp + right_disp):
                 pibot.value = (linear_speed, linear_speed)
-            pibot.value(0, 0)
+            pibot.value = (0, 0)
             print('Value', left_encoder.value, right_encoder.value)
 
 # main function to control the robot wheels
