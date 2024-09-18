@@ -68,14 +68,15 @@ def handle_mode1():
     for waypoint navigation
     """
     global left_disp, right_disp, linear_speed, turn_speed, motion
-    if motion == "forward":
-        # print("Enter here finally")
-        left_encoder.reset()
-        right_encoder.reset()
-        while (left_encoder + right_encoder) < (left_disp + right_disp):
-            pibot.value = (linear_speed, linear_speed)
-        pibot.value(0, 0)
-        print('Value', left_encoder.value, right_encoder.value)
+    while True:
+        if motion == "forward":
+            # print("Enter here finally")
+            left_encoder.reset()
+            right_encoder.reset()
+            while (left_encoder + right_encoder) < (left_disp + right_disp):
+                pibot.value = (linear_speed, linear_speed)
+            pibot.value(0, 0)
+            print('Value', left_encoder.value, right_encoder.value)
 
 # main function to control the robot wheels
 def move_robot():
