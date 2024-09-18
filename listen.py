@@ -138,7 +138,7 @@ def set_disp():
         motion = 'backward'
     return motion
 
-@app.route('/drive_mode')
+@app.route('/mode')
 def set_mode():
     global drive_mode 
     drive_mode = int(request.args.get('drive_mode'))
