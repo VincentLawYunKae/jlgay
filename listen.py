@@ -65,7 +65,14 @@ def handle_mode1():
     """
     for waypoint navigation
     """
-    pass
+    global left_disp, right_disp, linear_speed, turn_speed, motion
+    if motion == "forward":
+        left_encoder.reset()
+        right_encoder.reset()
+        while (left_encoder + right_encoder) < (left_disp + right_disp):
+            pibot.value = (left_speed, right_speed)
+        pibot.value(0, 0)
+        print('Value', left_encoder.value, right_encoder.value)
 
 # main function to control the robot wheels
 def move_robot():
@@ -158,7 +165,8 @@ use_pid = 0
 kp = 0
 ki = 0
 kd = 0
-left_speed, right_speed = 0, 0
+linear_speed = 0.7
+turn_speed = 0.6
 motion = ''
 drive_mode = 0
 
