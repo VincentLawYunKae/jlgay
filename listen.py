@@ -96,7 +96,8 @@ def handle_mode1():
                 while (left_encoder.value < abs(left_disp)) or (right_encoder.value < abs(right_disp)):
                     pibot.value = (turn_speed, -turn_speed)
                 pibot.value = (0, 0)
-            print('Value', left_encoder.value, right_encoder.value)
+            if motion != "stop":
+                print('Value', left_encoder.value, right_encoder.value)
         
         if drive_mode == 0:
             break
