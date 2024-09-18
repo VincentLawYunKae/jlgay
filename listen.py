@@ -70,7 +70,7 @@ def handle_mode1():
         left_encoder.reset()
         right_encoder.reset()
         while (left_encoder + right_encoder) < (left_disp + right_disp):
-            pibot.value = (left_speed, right_speed)
+            pibot.value = (linear_speed, linear_speed)
         pibot.value(0, 0)
         print('Value', left_encoder.value, right_encoder.value)
 
