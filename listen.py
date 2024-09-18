@@ -79,7 +79,17 @@ def handle_mode1():
                 pibot.value = (linear_speed, linear_speed)
             pibot.value = (0, 0)
             print('Value', left_encoder.value, right_encoder.value)
+        elif motion == "backward":
+            left_encoder.reset()
+            right_encoder.reset()
+            # the 2 is the experimental value
+            while (left_encoder.value + right_encoder.value) < abs((left_disp + right_disp-3)):
+                pibot.value = (-linear_speed, -linear_speed)
+            pibot.value = (0, 0)
+            print('Value', left_encoder.value, right_encoder.value)
+        
         motion = "stop"
+        
         if drive_mode == 0:
             break
 
@@ -202,7 +212,10 @@ flask_thread.start()
 
 try:
     while True:
-        move_robot()
+        if drive_mode == 0:
+            handle_mode0()
+        else:
+            handle_mode1()
 except KeyboardInterrupt:
     pibot.stop()
     picam2.stop()
