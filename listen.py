@@ -72,27 +72,31 @@ def handle_mode1():
         # print("motion", motion)
         try:
             motion, left_disp, right_disp = motion_queue.pop(0)
+            left_encoder.reset()
+            right_encoder.reset()
         except:
             motion = "stop"
         finally:
             if motion == "forward":
-                # print("Enter here finally")
-                left_encoder.reset()
-                right_encoder.reset()
                 # the 5 is the experimental value
                 while (left_encoder.value + right_encoder.value) < (left_disp + right_disp-5):
                     pibot.value = (linear_speed, linear_speed)
                 pibot.value = (0, 0)
-                print('Value', left_encoder.value, right_encoder.value)
             elif motion == "backward":
-                left_encoder.reset()
-                right_encoder.reset()
                 # the 2 is the experimental value
                 while (left_encoder.value + right_encoder.value) < abs((left_disp + right_disp-5)):
                     pibot.value = (-linear_speed, -linear_speed)
                 pibot.value = (0, 0)
-                print('Value', left_encoder.value, right_encoder.value)
-
+                
+            elif motion == "left":
+                while (left_encoder.value < abs(left_disp)) or (right_encoder.value < abs(right_disp)):
+                    pibot.value = (-turn_speed, turn_speed)
+                pibot.value = (0, 0)
+            elif motion == "right":
+                while (left_encoder.value < abs(left_disp)) or (right_encoder.value < abs(right_disp)):
+                    pibot.value = (turn_speed, -turn_speed)
+                pibot.value = (0, 0)
+            print('Value', left_encoder.value, right_encoder.value)
         
         if drive_mode == 0:
             break
