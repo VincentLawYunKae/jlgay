@@ -67,7 +67,7 @@ def handle_mode1():
     """
     for waypoint navigation
     """
-    global motion_queue
+    global motion_queue, kp, ki, kd
     while True:
         # print("motion", motion)
         try:
@@ -77,24 +77,34 @@ def handle_mode1():
         except:
             motion = "stop"
         finally:
+            pid_left = PID(kp, ki, kd, setpoint=right_encoder.value, output_limits=(0.5,1), starting_output=linear_speed)
             if motion == "forward":
                 # the 5 is the experimental value
-                while (left_encoder.value + right_encoder.value) < (left_disp + right_disp-5):
-                    pibot.value = (linear_speed, linear_speed)
+                while (left_encoder.value < abs(left_disp) - 3) and (right_encoder.value < abs(right_disp) - 3):
+                    pid_left.setpoint = right_encoder.value
+                    # pid_right = PID(kp, ki, kd, setpoint=left_encoder.value, output_limits=(0,1), starting_output=linear_speed)
+                    left_speed = pid_left(left_encoder.value)
+                    pibot.value = (left_speed, linear_speed)
                 pibot.value = (0, 0)
             elif motion == "backward":
+                pid_left = PID(kp, ki, kd, setpoint=right_encoder.value, output_limits=(0.5,1), starting_output=-linear_speed)
                 # the 2 is the experimental value
-                while (left_encoder.value + right_encoder.value) < abs((left_disp + right_disp-5)):
-                    pibot.value = (-linear_speed, -linear_speed)
+                while (left_encoder.value < abs(left_disp) - 3) and (right_encoder.value < abs(right_disp) - 3):
+                    left_speed = pid_left(left_encoder.value)
+                    pibot.value = (-left_speed, linear_speed)
                 pibot.value = (0, 0)
                 
             elif motion == "left":
+                pid_left = PID(kp, ki, kd, setpoint=right_encoder.value, output_limits=(0.5,1), starting_output=-turn_speed)
                 while (left_encoder.value < abs(left_disp)) and (right_encoder.value < abs(right_disp)):
-                    pibot.value = (-turn_speed, turn_speed)
+                    left_speed = pid_left(left_encoder.value)
+                    pibot.value = (-left_speed, turn_speed)
                 pibot.value = (0, 0)
             elif motion == "right":
+                pid_left = PID(kp, ki, kd, setpoint=right_encoder.value, output_limits=(0.5,1), starting_output=turn_speed)
                 while (left_encoder.value < abs(left_disp)) and (right_encoder.value < abs(right_disp)):
-                    pibot.value = (turn_speed, -turn_speed)
+                    left_speed = pid_left(left_encoder.value)
+                    pibot.value = (left_speed, -turn_speed)
                 pibot.value = (0, 0)
             if motion != "stop":
                 print('Value', left_encoder.value, right_encoder.value)
@@ -196,9 +206,9 @@ pibot = Robot(right=Motor(forward=in1, backward=in2, enable=ena), left=Motor(for
 left_encoder = Encoder(enc_a)
 right_encoder = Encoder(enc_b)
 use_pid = 0
-kp = 0
-ki = 0
-kd = 0
+kp = 0.0005
+ki = 0.01
+kd = 0.0005
 left_speed = 0
 right_speed = 0
 linear_speed = 0.75
