@@ -86,12 +86,12 @@ def handle_mode1():
                     pibot.value = (left_speed, linear_speed)
                 pibot.value = (0, 0)
             elif motion == "backward":
-                pid_left = PID(kp_lin, ki_lin, kd_lin, setpoint=right_encoder.value, output_limits=(-0.9,0), starting_output=-linear_speed)
+                pid_left = PID(kp_lin, ki_lin, kd_lin, setpoint=right_encoder.value, output_limits=(0.5, 1), starting_output=linear_speed)
                 # the 2 is the experimental value
                 while (left_encoder.value < abs(left_disp) - 6) and (right_encoder.value < abs(right_disp) - 6):
                     pid_left.setpoint = right_encoder.value
                     left_speed = pid_left(left_encoder.value)
-                    pibot.value = (left_speed, -linear_speed)
+                    pibot.value = (-left_speed, -linear_speed)
                 pibot.value = (0, 0)
                 
             elif motion == "left":
@@ -216,7 +216,7 @@ ki_turn = 0
 kd_turn = 0
 kp_lin = 0.05
 ki_lin = 0
-kd_lin = 0.0005
+kd_lin = 0.005
 left_speed = 0
 right_speed = 0
 linear_speed = 0.75
