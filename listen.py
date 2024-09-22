@@ -197,7 +197,6 @@ in4 = 24 # may have to change this
 enb = 25
 enc_a = 26
 enc_b = 16
-drive_mode = 0
 
 # Initialize robot and encoders
 pibot = Robot(right=Motor(forward=in1, backward=in2, enable=ena), left=Motor(forward=in3, backward=in4, enable=enb))
@@ -206,9 +205,9 @@ pibot = Robot(right=Motor(forward=in1, backward=in2, enable=ena), left=Motor(for
 left_encoder = Encoder(enc_a)
 right_encoder = Encoder(enc_b)
 use_pid = 0
-kp = 0.0005
-ki = 0.01
-kd = 0.0005
+kp = 0.5
+ki = 0.1
+kd = 0.05
 left_speed = 0
 right_speed = 0
 linear_speed = 0.75
