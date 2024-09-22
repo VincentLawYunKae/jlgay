@@ -95,8 +95,8 @@ def handle_mode1():
                 pibot.value = (0, 0)
                 
             elif motion == "left":
-                pid_left = PID(kp, ki, kd, setpoint=right_encoder.value, output_limits=(0.5,1), starting_output=-turn_speed)
-                pid_right = PID(kp, ki, kd, setpoint=left_encoder.value, output_limits=(0.1,0.7), starting_output=turn_speed)
+                pid_left = PID(kp, ki, kd, setpoint=right_encoder.value, output_limits=(-1,-0.5), starting_output=-turn_speed)
+                pid_right = PID(kp, ki, kd, setpoint=left_encoder.value, output_limits=(0.2,1), starting_output=turn_speed)
                 while (left_encoder.value < abs(left_disp)) and (right_encoder.value < abs(right_disp)):
                     left_speed = pid_left(left_encoder.value)
                     right_speed = pid_right(right_encoder.value)
@@ -104,7 +104,7 @@ def handle_mode1():
                 pibot.value = (0, 0)
             elif motion == "right":
                 pid_left = PID(kp, ki, kd, setpoint=right_encoder.value, output_limits=(0.5,1), starting_output=turn_speed)
-                pid_right = PID(kp, ki, kd, setpoint=left_encoder.value, output_limits=(0.1,0.7), starting_output=-turn_speed)
+                pid_right = PID(kp, ki, kd, setpoint=left_encoder.value, output_limits=(-0.2,-1), starting_output=-turn_speed)
                 while (left_encoder.value < abs(left_disp)) and (right_encoder.value < abs(right_disp)):
                     left_speed = pid_left(left_encoder.value)
                     right_speed = pid_right(right_encoder.value)
