@@ -211,7 +211,7 @@ pibot = Robot(right=Motor(forward=in1, backward=in2, enable=ena), left=Motor(for
 left_encoder = Encoder(enc_a)
 right_encoder = Encoder(enc_b)
 use_pid = 0
-kp = 1
+kp = 0
 ki = 0
 kd = 0
 left_speed = 0
