@@ -128,37 +128,34 @@ def move_robot():
         handle_mode1()
     
     
-    
-# Receive confirmation whether to use pid or not to control the wheels (forward & backward)
-@app.route('/pid')
-def set_pid():
-    global use_pid, kp, ki, kd
-    use_pid = int(request.args.get('use_pid'))
-    if use_pid:
-        kp, ki, kd = float(request.args.get('kp')), float(request.args.get('ki')), float(request.args.get('kd'))
-        return "Using PID"
-    else:
-        return "Not using PID"
-    
 @app.route('/linearpid')
-def set_pid():
-    global use_pid, kp, ki, kd
-    use_pid = int(request.args.get('use_pid'))
-    if use_pid:
-        kp, ki, kd = float(request.args.get('kp')), float(request.args.get('ki')), float(request.args.get('kd'))
-        return "Using PID"
-    else:
-        return "Not using PID"
+def set_linearpid():
+    global kp_lin, ki_lin, kd_lin
+    kp_lin, ki_lin, kd_lin = float(request.args.get('kp')), float(request.args.get('ki')), float(request.args.get('kd'))
+    print("Setting Linear PID to ", kp_lin, ki_lin, kd_lin)
+    return "Setting Linear PID"
+
     
 @app.route('/turnpid')
-def set_pid():
-    global use_pid, kp, ki, kd
-    use_pid = int(request.args.get('use_pid'))
-    if use_pid:
-        kp, ki, kd = float(request.args.get('kp')), float(request.args.get('ki')), float(request.args.get('kd'))
-        return "Using PID"
-    else:
-        return "Not using PID"
+def set_turnpid():
+    global kp_turn, ki_turn, kd_turn
+    kp_turn, ki_turn, kd_turn = float(request.args.get('kp')), float(request.args.get('ki')), float(request.args.get('kd'))
+    print("Setting Turn PID to ", kp_turn, ki_turn, kd_turn)
+    return "Setting Turn PID"
+
+@app.route('/lineartolerance')
+def set_lineartolerance():
+    global linear_tolerance
+    linear_tolerance = int(request.args.get('tolerance'))
+    print("Setting Linar tolerance to ", linear_tolerance)
+    return "Setting Linear tolerance"
+
+@app.route('/turntolerance')
+def set_turntolerance():
+    global turn_tolerance
+    turn_tolerance = int(request.args.get('tolerance'))
+    print("Setting Turn tolerance to ", turn_tolerance)
+    return "Setting Turn tolerance"
     
 # Receive a request to capture and send a snapshot of the picamera
 @app.route('/image')
@@ -184,7 +181,6 @@ def move():
     elif (left_speed < 0 and right_speed < 0):
         motion = 'backward'
     return motion
-    # if 'time' in request.args:
 
 @app.route('/disp')
 def set_disp():
@@ -257,6 +253,7 @@ time.sleep(2)
 # Initialize flask
 def run_flask():
     app.run(host='0.0.0.0', port=5000)
+    
 flask_thread = threading.Thread(target=run_flask)
 flask_thread.daemon = True
 flask_thread.start()
