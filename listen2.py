@@ -80,14 +80,14 @@ def handle_mode1():
             if motion == "forward":
                 # the 5 is the experimental value
                 pid_left = PID(kp_lin, ki_lin, kd_lin, setpoint=right_encoder.value, output_limits=(0.5,1), starting_output=linear_speed)
-                start_time = time.time()
+                # start_time = time.time()
                 while (left_encoder.value < abs(left_disp) - linear_tolerance) and (right_encoder.value < abs(right_disp) - linear_tolerance):
                     pid_left.setpoint = right_encoder.value
                     left_speed = pid_left(left_encoder.value)
                     pibot.value = (left_speed, linear_speed)
-                end_time = time.time()
-                dt = end_time - start_time
-                print(f"Robot velocity {linear_speed}m/s, time taken {dt}s, Actual velocity {1/dt}m/s, Scale factor = {1/(dt*linear_speed)}")
+                # end_time = time.time()
+                # dt = end_time - start_time
+                # print(f"Robot velocity {linear_speed}m/s, time taken {dt}s, Actual velocity {1/dt}m/s, Scale factor = {1/(dt*linear_speed)}")
                 pibot.value = (0, 0)
             elif motion == "backward":
                 pid_left = PID(kp_lin, ki_lin, kd_lin, setpoint=right_encoder.value, output_limits=(0.5, 1), starting_output=linear_speed)

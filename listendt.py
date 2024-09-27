@@ -188,21 +188,9 @@ def move():
 
 @app.route('/disp')
 def set_disp():
-    global left_disp, right_disp, motion, motion_queue
-    left_disp, right_disp = int(request.args.get('left_disp')), int(request.args.get('right_disp'))
-    if (left_disp == 0 and right_disp == 0):
-        motion = 'stop'
-    elif (left_disp != right_disp ):
-        if left_disp > right_disp:
-            motion = 'right'
-        else:
-            motion = 'left'
-    elif (left_disp > 0 and right_disp > 0):
-        motion = 'forward'
-    elif (left_disp < 0 and right_disp < 0):
-        motion = 'backward'
-    if motion != 'stop':
-        motion_queue.append((motion, left_disp, right_disp))
+    global motion, motion_queue
+    dt, motion = float(request.args.get('dt')), request.args.get('motion')
+    motion_queue.append((motion, dt))
     print("The motion now is", motion)
     return motion
 
