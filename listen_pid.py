@@ -101,7 +101,7 @@ def handle_mode1():
                     pid_left.setpoint = right_encoder.value
                     pid_right.setpoint = left_encoder.value
                     left_speed = pid_left(left_encoder.value)
-                    right_speed = pid_right(right_encoder.value)
+                    # right_speed = pid_right(right_encoder.value)
                     print(f"The left speed now is {left_speed} and the right speed now is {right_speed}")
                     pibot.value = (-left_speed, right_speed)
                 pibot.value = (0, 0)
@@ -115,7 +115,7 @@ def handle_mode1():
                     pid_right.setpoint = left_encoder.value
                     pid_left.setpoint = right_encoder.value
                     left_speed = pid_left(left_encoder.value)
-                    right_speed = pid_right(right_encoder.value)
+                    # right_speed = pid_right(right_encoder.value)
                     print(f"The left speed now is {left_speed} and the right speed now is {right_speed}")
                     pibot.value = (left_speed, -right_speed)
                 pibot.value = (0, 0)
