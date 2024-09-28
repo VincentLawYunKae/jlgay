@@ -77,20 +77,14 @@ def handle_mode1():
             motion = "stop"
         finally:
             if motion == "forward":
-                # the 5 is the experimental value
                 pid_left = PID(kp_lin, ki_lin, kd_lin, setpoint=right_encoder.value, output_limits=(0.5,1), starting_output=linear_speed)
-                # start_time = time.time()
                 while (left_encoder.value < abs(left_disp) - linear_tolerance) and (right_encoder.value < abs(right_disp) - linear_tolerance):
                     pid_left.setpoint = right_encoder.value
                     left_speed = pid_left(left_encoder.value)
                     pibot.value = (left_speed, linear_speed)
-                # end_time = time.time()
-                # dt = end_time - start_time
-                # print(f"Robot velocity {linear_speed}m/s, time taken {dt}s, Actual velocity {1/dt}m/s, Scale factor = {1/(dt*linear_speed)}")
                 pibot.value = (0, 0)
             elif motion == "backward":
                 pid_left = PID(kp_lin, ki_lin, kd_lin, setpoint=right_encoder.value, output_limits=(0.5, 1), starting_output=linear_speed)
-                # the 2 is the experimental value
                 while (left_encoder.value < abs(left_disp) - linear_tolerance) and (right_encoder.value < abs(right_disp) - linear_tolerance):
                     pid_left.setpoint = right_encoder.value
                     left_speed = pid_left(left_encoder.value)
@@ -98,22 +92,23 @@ def handle_mode1():
                 pibot.value = (0, 0)
                 
             elif motion == "left":
-                set_point = (left_encoder.value + right_encoder.value) / 2
-                pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0,0.8), starting_output=turn_speed)
-                pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0,0.8), starting_output=turn_speed)
+                pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=right_encoder.value, output_limits=(0.45,0.85), starting_output=turn_speed)
+                pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=left_encoder.value, output_limits=(0.45,0.85), starting_output=turn_speed)
                 while (left_encoder.value < abs(left_disp) - turn_tolerance) and (right_encoder.value < abs(right_disp) - turn_tolerance):
+                    print(f"The left setpoint now is {pid_left.setpoint} and the right setpoint now is {pid_right.setpoint}")
+                    pid_left.setpoint = max(left_encoder.value, (left_encoder.value + right_encoder.value) / 2)
+                    pid_right.setpoint = max(right_encoder.value, (left_encoder.value + right_encoder.value) / 2)
                     left_speed = pid_left(left_encoder.value)
                     right_speed = pid_right(right_encoder.value)
                     pibot.value = (-left_speed, right_speed)
                 pibot.value = (0, 0)
             elif motion == "right":
-                set_point = (left_encoder.value + right_encoder.value) / 2
-                pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0,0.8), starting_output=turn_speed)
-                pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0,0.8), starting_output=turn_speed)
+                pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=right_encoder.value, output_limits=(0.45,0.85), starting_output=turn_speed)
+                pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=left_encoder.value, output_limits=(0.45,0.85), starting_output=turn_speed)
                 while (left_encoder.value < abs(left_disp) - turn_tolerance) and (right_encoder.value < abs(right_disp) - turn_tolerance):
                     print(f"The left setpoint now is {pid_left.setpoint} and the right setpoint now is {pid_right.setpoint}")
-                    pid_left.setpoint = (left_encoder.value + right_encoder.value) / 2
-                    pid_right.setpoint = (left_encoder.value + right_encoder.value) / 2
+                    pid_left.setpoint = max(left_encoder.value, (left_encoder.value + right_encoder.value) / 2)
+                    pid_right.setpoint = max(right_encoder.value, (left_encoder.value + right_encoder.value) / 2)
                     left_speed = pid_left(left_encoder.value)
                     right_speed = pid_right(right_encoder.value)
                     pibot.value = (left_speed, -right_speed)
