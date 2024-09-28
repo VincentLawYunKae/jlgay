@@ -9,7 +9,6 @@ import threading
 
 app = Flask(__name__)
 
-
 class Encoder(object):
     def __init__(self, pin):
         self._value = 0
