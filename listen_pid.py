@@ -108,10 +108,10 @@ def handle_mode1():
                 pibot.value = (0, 0)
             elif motion == "right":
                 set_point = (left_encoder.value + right_encoder.value) / 2
-                print(f"The setpoint now is {set_point}")
                 pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(-0.8,0.8), starting_output=turn_speed)
                 pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(-0.8,0.8), starting_output=turn_speed)
                 while (left_encoder.value < abs(left_disp) - turn_tolerance) and (right_encoder.value < abs(right_disp) - turn_tolerance):
+                    print(f"The left setpoint now is {pid_left.setpoint} and the right setpoint now is {pid_right.setpoint}")
                     left_speed = pid_left(left_encoder.value)
                     right_speed = pid_right(right_encoder.value)
                     pibot.value = (left_speed, -right_speed)
