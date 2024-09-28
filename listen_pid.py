@@ -66,7 +66,7 @@ def handle_mode1():
     """
     for waypoint navigation
     """
-    global motion_queue, kp_lin, ki_lin, kd_lin, kp_turn, ki_turn, kd_turn, turn_tolerance, linear_tolerance
+    global motion_queue, kp_lin, ki_lin, kd_lin, kp_turn, ki_turn, kd_turn, turn_tolerance, linear_tolerance, left_speed, right_speed
     while True:
         # print("motion", motion)
         try:
