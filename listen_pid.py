@@ -92,8 +92,8 @@ def handle_mode1():
                 pibot.value = (0, 0)
                 
             elif motion == "left":
-                pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=right_encoder.value, output_limits=(0.45,0.85), starting_output=turn_speed)
-                pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=left_encoder.value, output_limits=(0.45,0.85), starting_output=turn_speed)
+                pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=right_encoder.value, output_limits=(0.2,0.9), starting_output=turn_speed)
+                pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=left_encoder.value, output_limits=(0.2,0.9), starting_output=turn_speed)
                 while (left_encoder.value < abs(left_disp) - turn_tolerance) and (right_encoder.value < abs(right_disp) - turn_tolerance):
                     print(f"The left setpoint now is {pid_left.setpoint} and the right setpoint now is {pid_right.setpoint}")
                     pid_left.setpoint = max(left_encoder.value, right_encoder.value)
@@ -103,8 +103,8 @@ def handle_mode1():
                     pibot.value = (-left_speed, right_speed)
                 pibot.value = (0, 0)
             elif motion == "right":
-                pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=right_encoder.value, output_limits=(0.45,0.85), starting_output=turn_speed)
-                pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=left_encoder.value, output_limits=(0.45,0.85), starting_output=turn_speed)
+                pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=right_encoder.value, output_limits=(0.2,0.9), starting_output=turn_speed)
+                pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=left_encoder.value, output_limits=(0.2,0.9), starting_output=turn_speed)
                 while (left_encoder.value < abs(left_disp) - turn_tolerance) and (right_encoder.value < abs(right_disp) - turn_tolerance):
                     print(f"The left setpoint now is {pid_left.setpoint} and the right setpoint now is {pid_right.setpoint}")
                     pid_left.setpoint = max(left_encoder.value, right_encoder.value)
