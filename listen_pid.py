@@ -100,11 +100,11 @@ def handle_mode1():
                     # pid_right.setpoint = max(right_encoder.value, (left_encoder.value+right_encoder.value)/2)
                     pid_left.setpoint = right_encoder.value
                     pid_right.setpoint = left_encoder.value
-                    left_speed = pid_left(left_encoder.value)
-                    # right_speed = pid_right(right_encoder.value)
+                    # left_speed = pid_left(left_encoder.value)
+                    right_speed = pid_right(right_encoder.value)
                     print(f"The left speed now is {left_speed} and the right speed now is {right_speed}")
                     # pibot.value = (-left_speed, right_speed)
-                    pibot.value = (-left_speed, turn_speed)
+                    pibot.value = (-turn_speed, right_speed)
                 pibot.value = (0, 0)
             elif motion == "right":
                 pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=right_encoder.value, output_limits=(0.2,0.9), starting_output=turn_speed)
