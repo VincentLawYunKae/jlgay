@@ -103,7 +103,8 @@ def handle_mode1():
                     left_speed = pid_left(left_encoder.value)
                     # right_speed = pid_right(right_encoder.value)
                     print(f"The left speed now is {left_speed} and the right speed now is {right_speed}")
-                    pibot.value = (-left_speed, right_speed)
+                    # pibot.value = (-left_speed, right_speed)
+                    pibot.value = (-left_speed, turn_speed)
                 pibot.value = (0, 0)
             elif motion == "right":
                 pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=right_encoder.value, output_limits=(0.2,0.9), starting_output=turn_speed)
@@ -117,7 +118,8 @@ def handle_mode1():
                     left_speed = pid_left(left_encoder.value)
                     # right_speed = pid_right(right_encoder.value)
                     print(f"The left speed now is {left_speed} and the right speed now is {right_speed}")
-                    pibot.value = (left_speed, -right_speed)
+                    pibot.value = (left_speed, -turn_speed)
+                    # pibot.value = (left_speed, -right_speed)
                 pibot.value = (0, 0)
             if motion != "stop":
                 print('Value', left_encoder.value, right_encoder.value)
