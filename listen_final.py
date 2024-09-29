@@ -85,8 +85,8 @@ def handle_mode1():
                 pid_left = PID(kp_lin, ki_lin, kd_lin, setpoint=left_disp, output_limits=(0.58,0.62), starting_output=linear_speed)
                 pid_right = PID(kp_lin, ki_lin, kd_lin, setpoint=right_disp, output_limits=(0.58,0.62), starting_output=linear_speed)
                 while (left_encoder.value < abs(left_disp) - linear_tolerance) and (right_encoder.value < abs(right_disp) - linear_tolerance):
-                    # pid_left.setpoint = right_encoder.value
-                    # pid_right.setpoint = left_encoder.value
+                    pid_left.setpoint = max(left_encoder.value, (right_encoder.value+left_encoder.value)/2)
+                    pid_right.setpoint = max(right_encoder.value, (right_encoder.value+left_encoder.value)/2)
                     print(f"Setpoint: {pid_left.setpoint}, {pid_right.setpoint}")
                     right_speed = pid_right(right_encoder.value)
                     left_speed = pid_left(left_encoder.value)
