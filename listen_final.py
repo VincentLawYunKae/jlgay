@@ -239,9 +239,9 @@ kp_turn= 0.1
 ki_turn = 0.005
 kd_turn = 0.001
 
-kp_lin = 0.05
-ki_lin = 0.001
-kd_lin = 0.001
+kp_lin = 2
+ki_lin = 0.05
+kd_lin = 0.01
 left_speed = 0
 right_speed = 0
 linear_speed = 0.5
