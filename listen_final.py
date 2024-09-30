@@ -107,8 +107,8 @@ def handle_mode1():
                 pibot.value = (0, 0)
             elif motion == "turn left":
                 set_point = (left_encoder.value + right_encoder.value) / 2
-                pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(-0.8,0.8), starting_output=turn_speed)
-                pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(-0.8,0.8), starting_output=turn_speed)
+                pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=turn_speed)
+                pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=turn_speed)
                 start_time = time.time()
                 while (time.time() - start_time) < dt:
                     left_speed = pid_left(left_encoder.value)
@@ -117,8 +117,8 @@ def handle_mode1():
                 pibot.value = (0, 0)
             elif motion == "turn right":
                 set_point = (left_encoder.value + right_encoder.value) / 2
-                pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(-0.8,0.8), starting_output=turn_speed)
-                pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(-0.8,0.8), starting_output=turn_speed)
+                pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=turn_speed)
+                pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=turn_speed)
                 start_time = time.time()
                 while (time.time() - start_time) < dt:
                     left_speed = pid_left(left_encoder.value)
@@ -234,9 +234,11 @@ pibot = Robot(right=Motor(forward=in1, backward=in2, enable=ena), left=Motor(for
 left_encoder = Encoder(enc_a)
 right_encoder = Encoder(enc_b)
 use_pid = 0
-kp_turn= 0.05
+
+kp_turn= 0.1
 ki_turn = 0.005
-kd_turn = 0.01
+kd_turn = 0.001
+
 kp_lin = 0.05
 ki_lin = 0.001
 kd_lin = 0.001
