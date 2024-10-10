@@ -126,7 +126,7 @@ def move():
         motion = 'stop'
     elif (left_speed != right_speed ):
         global turn_motion_queue
-        turn_motion_queue.append(left_speed, right_speed)
+        turn_motion_queue.append((left_speed, right_speed))
         motion = 'turning'
     elif (left_speed > 0 and right_speed > 0):
         motion = 'forward'
