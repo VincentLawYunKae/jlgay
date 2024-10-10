@@ -49,7 +49,7 @@ def move_robot():
                     right_speed = pid_right(right_encoder.value)
                     pibot.value = (left_speed, -right_speed)
                 pibot.value = (0, 0)
-                time.sleep(0.15)     # this is for the rotation to settling down
+                time.sleep(0.18)     # this is for the rotation to settling down
                 
             # turn left
             else:
@@ -63,7 +63,7 @@ def move_robot():
                     right_speed = pid_right(right_encoder.value)
                     pibot.value = (-left_speed, right_speed)
                 pibot.value = (0, 0) 
-                time.sleep(0.15)
+                time.sleep(0.18)
             
             # try to reset the pid for the linera motion after handling the turn and stop
             flag_new_pid_cycle = True
