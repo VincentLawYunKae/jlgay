@@ -30,7 +30,7 @@ class Encoder(object):
 
 # main function to control the robot wheels
 def move_robot():
-    global use_pid, left_speed, right_speed, turn_motion_queue
+    global use_pid, left_speed, right_speed, turn_motion_queue, motion
     flag_new_pid_cycle = True
     while True:
         if (motion == 'turning' or turn_motion_queue):
