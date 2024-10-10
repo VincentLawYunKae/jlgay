@@ -49,6 +49,7 @@ def move_robot():
                     right_speed = pid_right(right_encoder.value)
                     pibot.value = (left_speed, -right_speed)
                 pibot.value = (0, 0)
+                time.sleep(0.2)
                 
             # turn left
             else:
