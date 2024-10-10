@@ -30,15 +30,14 @@ class Encoder(object):
 
 # main function to control the robot wheels
 def move_robot():
-    global use_pid, left_speed, right_speed
+    global use_pid, left_speed, right_speed, turn_motion_queue
     flag_new_pid_cycle = True
     while True:
-        if (motion == 'stop') or (motion == 'turning'):
+        if (motion == 'turning' or turn_motion_queue):
+            left_speed, right_speed = turn_motion_queue.pop(0)
+
             # turn right
-            if left_speed == right_speed:
-                pibot.value = (0, 0)
-                
-            elif left_speed > right_speed:
+            if left_speed > right_speed:
                 left_speed, right_speed = abs(left_speed), abs(right_speed)
                 set_point = (left_encoder.value + right_encoder.value) / 2
                 pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=abs(left_speed))
@@ -68,7 +67,15 @@ def move_robot():
             # try to reset the pid for the linera motion after handling the turn and stop
             flag_new_pid_cycle = True
             left_encoder.reset()
-            right_encoder.reset()          
+            right_encoder.reset()   
+            
+        elif (motion == 'stop'):
+            pibot.value = (0, 0)
+            # try to reset the pid for the linera motion after handling the turn and stop
+            flag_new_pid_cycle = True
+            left_encoder.reset()
+            right_encoder.reset() 
+                   
         else:
             left_speed, right_speed = abs(left_speed), abs(right_speed)
             if flag_new_pid_cycle:
@@ -119,7 +126,9 @@ def move():
     if (left_speed == 0 and right_speed == 0):
         motion = 'stop'
     elif (left_speed != right_speed ):
+        global turn_motion_queue
         motion = 'turning'
+        turn_motion_queue.append(left_speed, right_speed)
     elif (left_speed > 0 and right_speed > 0):
         motion = 'forward'
     elif (left_speed < 0 and right_speed < 0):
@@ -157,6 +166,7 @@ left_speed, right_speed = 0, 0
 motion = ''
 left_dt, right_dt = 0.041803093477052005, 0.045203093477052005
 kp_turn, ki_turn, kd_turn = 0.1, 0.005, 0.001
+turn_motion_queue = []
 
 # Initialize the PiCamera
 picam2 = Picamera2()
