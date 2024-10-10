@@ -34,6 +34,7 @@ def move_robot():
     flag_new_pid_cycle = True
     while True:
         if (motion == 'turning' or turn_motion_queue):
+            print(len(turn_motion_queue))
             left_speed, right_speed = turn_motion_queue.pop(0)
 
             # turn right
@@ -129,6 +130,7 @@ def move():
         global turn_motion_queue
         motion = 'turning'
         turn_motion_queue.append(left_speed, right_speed)
+        print(f"Len of turning queue: {len(turn_motion_queue)}")
     elif (left_speed > 0 and right_speed > 0):
         motion = 'forward'
     elif (left_speed < 0 and right_speed < 0):
