@@ -35,11 +35,14 @@ def move_robot():
     while True:
         if (motion == 'stop') or (motion == 'turning'):
             # turn right
-            if left_speed > right_speed:
+            if left_speed == right_speed:
+                pibot.value = (0, 0)
+                
+            elif left_speed > right_speed:
                 left_speed, right_speed = abs(left_speed), abs(right_speed)
                 set_point = (left_encoder.value + right_encoder.value) / 2
-                pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=turn_speed)
-                pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=turn_speed)
+                pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=abs(left_speed))
+                pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=abs(right_speed))
                 start_time = time.time()
                 while (time.time() - start_time) < right_dt:
                     left_speed = pid_left(left_encoder.value)
@@ -51,15 +54,14 @@ def move_robot():
             else:
                 left_speed, right_speed = abs(left_speed), abs(right_speed)
                 set_point = (left_encoder.value + right_encoder.value) / 2
-                pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=turn_speed)
-                pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=turn_speed)
+                pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=abs(left_speed))
+                pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=abs(right_speed))
                 start_time = time.time()
                 while (time.time() - start_time) < left_dt:
                     left_speed = pid_left(left_encoder.value)
                     right_speed = pid_right(right_encoder.value)
                     pibot.value = (-left_speed, right_speed)
                 pibot.value = (0, 0) 
-            
             
             # try to reset the pid for the linera motion after handling the turn and stop
             flag_new_pid_cycle = True
