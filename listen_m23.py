@@ -34,9 +34,7 @@ def move_robot():
     flag_new_pid_cycle = True
     while True:
         if (motion == 'turning' or turn_motion_queue):
-            print(len(turn_motion_queue))
             left_speed, right_speed = turn_motion_queue.pop(0)
-
             # turn right
             if left_speed > right_speed:
                 left_speed, right_speed = abs(left_speed), abs(right_speed)
@@ -49,7 +47,7 @@ def move_robot():
                     right_speed = pid_right(right_encoder.value)
                     pibot.value = (left_speed, -right_speed)
                 pibot.value = (0, 0)
-                time.sleep(0.18)     # this is for the rotation to settling down
+                time.sleep(0.15)     # this is for the rotation to settling down
                 
             # turn left
             else:
@@ -63,7 +61,7 @@ def move_robot():
                     right_speed = pid_right(right_encoder.value)
                     pibot.value = (-left_speed, right_speed)
                 pibot.value = (0, 0) 
-                time.sleep(0.18)
+                time.sleep(0.15)
             
             # try to reset the pid for the linera motion after handling the turn and stop
             flag_new_pid_cycle = True
@@ -130,7 +128,6 @@ def move():
         global turn_motion_queue
         motion = 'turning'
         turn_motion_queue.append(left_speed, right_speed)
-        print(f"Len of turning queue: {len(turn_motion_queue)}")
     elif (left_speed > 0 and right_speed > 0):
         motion = 'forward'
     elif (left_speed < 0 and right_speed < 0):
