@@ -36,37 +36,31 @@ def move_robot():
         if (motion == 'turning' or turn_motion_queue):
             if mode == 0:
                 try:
-                    left_speed, right_speed = turn_motion_queue.pop(0)
+                    motion, dt = turn_motion_queue.pop(0)
                 except:
                     motion = 'stop'
                     
                 # turn right
-                if left_speed > right_speed:
-                    left_speed, right_speed = abs(left_speed), abs(right_speed)
+                if motion == "turn left":
                     set_point = (left_encoder.value + right_encoder.value) / 2
-                    pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=abs(left_speed))
-                    pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=abs(right_speed))
+                    pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=turn_speed)
+                    pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=turn_speed)
                     start_time = time.time()
-                    while (time.time() - start_time) < right_dt:
+                    while (time.time() - start_time) < dt:
+                        left_speed = pid_left(left_encoder.value)
+                        right_speed = pid_right(right_encoder.value)
+                        pibot.value = (-left_speed, right_speed)
+                    pibot.value = (0, 0)
+                elif motion == "turn right":
+                    set_point = (left_encoder.value + right_encoder.value) / 2
+                    pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=turn_speed)
+                    pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=turn_speed)
+                    start_time = time.time()
+                    while (time.time() - start_time) < dt:
                         left_speed = pid_left(left_encoder.value)
                         right_speed = pid_right(right_encoder.value)
                         pibot.value = (left_speed, -right_speed)
                     pibot.value = (0, 0)
-                    # time.sleep(0.18)     # this is for the rotation to settling down
-                    
-                # turn left
-                else:
-                    left_speed, right_speed = abs(left_speed), abs(right_speed)
-                    set_point = (left_encoder.value + right_encoder.value) / 2
-                    pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=abs(left_speed))
-                    pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=abs(right_speed))
-                    start_time = time.time()
-                    while (time.time() - start_time) < left_dt:
-                        left_speed = pid_left(left_encoder.value)
-                        right_speed = pid_right(right_encoder.value)
-                        pibot.value = (-left_speed, right_speed)
-                    pibot.value = (0, 0) 
-                    # time.sleep(0.18)
                 
                 # try to reset the pid for the linera motion after handling the turn and stop
                 flag_new_pid_cycle = True
@@ -147,6 +141,13 @@ def move():
         motion = 'backward'
     return motion
     
+@app.route('/angle')
+def set_angle():
+    global motion, turn_motion_queue
+    dt, motion = float(request.args.get('dt')), request.args.get('motion')
+    turn_motion_queue.append((motion, dt))
+    print("The motion now is", motion)
+    return motion
 
 @app.route('/dt')
 def set_dt():
@@ -183,6 +184,7 @@ kp = 0
 ki = 0
 kd = 0
 left_speed, right_speed = 0, 0
+turnspeed = 0.75
 motion = ''
 left_dt, right_dt = 0.041803093477052005, 0.045203093477052005
 kp_turn, ki_turn, kd_turn = 0.1, 0.005, 0.001
