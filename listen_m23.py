@@ -65,7 +65,7 @@ def handle_mode0():
     """
     for turning in tick mock
     """
-    global use_pid, left_speed, right_speed, motion_queue
+    global use_pid, left_speed, right_speed, motion_queue, motion
     flag_new_pid_cycle = True
     while True:
         if motion_queue:
