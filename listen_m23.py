@@ -33,6 +33,7 @@ def move_robot():
     global use_pid, left_speed, right_speed, turn_motion_queue, motion
     flag_new_pid_cycle = True
     while True:
+        print(motion, turn_motion_queue)
         if (motion == 'turning' or turn_motion_queue):
             if mode == 0:
                 try:
