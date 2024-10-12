@@ -213,7 +213,7 @@ right_speed = 0
 
 turn_speed = 0.75
 motion = ''
-drive_mode = 1
+drive_mode = 0
 motion_queue = []
 
 # Initialize the PiCamera
@@ -233,6 +233,7 @@ flask_thread.start()
 
 try:
     while True:
+        print("mode", drive_mode)
         if drive_mode == 0:
             handle_mode0()
         else:
