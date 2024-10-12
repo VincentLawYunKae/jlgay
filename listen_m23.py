@@ -39,13 +39,14 @@ def move_robot():
                     motion, dt = turn_motion_queue.pop(0)
                 except:
                     motion = 'stop'
-                    
+                print(motion, turn_motion_queue, dt)
                 # turn right
                 if motion == "turn left":
                     set_point = (left_encoder.value + right_encoder.value) / 2
                     pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=turn_speed)
                     pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=turn_speed)
                     start_time = time.time()
+                    
                     while (time.time() - start_time) < dt:
                         left_speed = pid_left(left_encoder.value)
                         right_speed = pid_right(right_encoder.value)
