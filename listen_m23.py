@@ -69,6 +69,7 @@ def handle_mode0():
     flag_new_pid_cycle = True
     while True:
         if motion_queue:
+            print("Enter here to turn the motor", motion_queue)
             motion, dt = motion_queue.pop(0)
             if motion == "turn left":
                 set_point = (left_encoder.value + right_encoder.value) / 2
