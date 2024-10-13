@@ -85,11 +85,11 @@ def handle_mode0():
                     pibot.value = (-left_speed, right_speed)
                     # print(time.time() - start_time)
                     # print("Still in the loop")
-                motion = "stop"
+                # motion = "stop"
                 pibot.value = (0, 0)
             elif motion == "turn right":
                 print("handle turn right")
-                print(type(dt), dt)
+                # print(type(dt), dt)
                 set_point = (left_encoder.value + right_encoder.value) / 2
                 pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=turn_speed)
                 pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=turn_speed)
@@ -100,7 +100,7 @@ def handle_mode0():
                     pibot.value = (left_speed, -right_speed)
                     # print(time.time() - start_time)
                     # print("Still in the loop")
-                motion = "stop"
+                # motion = "stop"
                 pibot.value = (0, 0)
             left_encoder.reset()
             right_encoder.reset()
