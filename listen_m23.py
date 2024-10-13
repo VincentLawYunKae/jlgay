@@ -68,11 +68,13 @@ def handle_mode0():
     global use_pid, left_speed, right_speed, motion_queue, motion
     flag_new_pid_cycle = True
     while True:
+        print("motion_queue before popping", motion_queue)
         if len(motion_queue) > 0:
             motion, dt = motion_queue.pop(0)
+            print("motion_queue after popping", motion_queue)
             if motion == "turn left":
                 print("handle turn left")
-                print(type(dt), dt)
+                # print(type(dt), dt)
                 set_point = (left_encoder.value + right_encoder.value) / 2
                 pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=turn_speed)
                 pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=turn_speed)
@@ -81,8 +83,8 @@ def handle_mode0():
                     left_speed = pid_left(left_encoder.value)
                     right_speed = pid_right(right_encoder.value)
                     pibot.value = (-left_speed, right_speed)
-                    print(time.time() - start_time)
-                    print("Still in the loop")
+                    # print(time.time() - start_time)
+                    # print("Still in the loop")
                 motion = "stop"
                 pibot.value = (0, 0)
             elif motion == "turn right":
@@ -96,8 +98,8 @@ def handle_mode0():
                     left_speed = pid_left(left_encoder.value)
                     right_speed = pid_right(right_encoder.value)
                     pibot.value = (left_speed, -right_speed)
-                    print(time.time() - start_time)
-                    print("Still in the loop")
+                    # print(time.time() - start_time)
+                    # print("Still in the loop")
                 motion = "stop"
                 pibot.value = (0, 0)
             left_encoder.reset()
