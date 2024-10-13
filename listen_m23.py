@@ -170,9 +170,17 @@ def move():
         motion = 'backward'
     return motion
 
+@app.route('/dt')
+def set_dt():
+    global dt_right, dt_left
+    dt_right, dt_left = float(request.args.get('dt_right')), float(request.args.get('dt_left'))
+    return str(dt_right) + " " + str(dt_left)
+
 @app.route('/angle')
 def set_angle():
-    global motion, motion_queue
+    global motion, motion_queue, dt_right, dt_left
+    dt = dt_right if motion == 'turn right' else dt_left
+    print(dt)
     dt, motion = float(request.args.get('dt')), request.args.get('motion')
     motion_queue.append((motion, dt))
     print("The motion now is", motion)
@@ -222,6 +230,9 @@ kd=0.0005
 
 left_speed = 0
 right_speed = 0
+
+dt_left = 0.041803093477052005
+dt_right = 0.045203093477052005
 
 turn_speed = 0.75
 motion = ''
