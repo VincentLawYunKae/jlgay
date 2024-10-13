@@ -71,7 +71,6 @@ def handle_mode1():
     while True:
         # print("motion", motion)
         try:
-            
             motion_elem = motion_queue.pop(0)
             if len(motion_elem) == 2:
                 motion, dt = motion_elem
