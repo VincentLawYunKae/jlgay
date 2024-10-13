@@ -176,6 +176,7 @@ def set_dt():
     # Try to retrieve the dt_left and dt_right parameters from the GET request
     dt_left = float(request.args.get('dt_left', 0))  # Default to 0 if not provided
     dt_right = float(request.args.get('dt_right', 0)) 
+    return str(dt_left) + " " + str(dt_right)
 
 @app.route('/angle')
 def set_angle():
