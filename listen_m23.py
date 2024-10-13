@@ -68,7 +68,7 @@ def handle_mode0():
     global use_pid, left_speed, right_speed, motion_queue, motion
     flag_new_pid_cycle = True
     while True:
-        print(len(motion_queue), len(motion_queue) > 0, motion)
+        # print(len(motion_queue), len(motion_queue) > 0, motion)
         if len(motion_queue) > 0:
             # print("motion_queue before popping", motion_queue)
             motion, dt = motion_queue.pop(0)
