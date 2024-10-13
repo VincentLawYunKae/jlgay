@@ -68,7 +68,7 @@ def handle_mode0():
     global use_pid, left_speed, right_speed, motion_queue, motion
     flag_new_pid_cycle = True
     while True:
-        if motion_queue:
+        if len(motion_queue) > 0:
             motion, dt = motion_queue.pop(0)
             if motion == "turn left":
                 print("handle turn left")
@@ -83,6 +83,7 @@ def handle_mode0():
                     pibot.value = (-left_speed, right_speed)
                     print(time.time() - start_time)
                     print("Still in the loop")
+                motion = "stop"
                 pibot.value = (0, 0)
             elif motion == "turn right":
                 print("handle turn right")
@@ -97,6 +98,7 @@ def handle_mode0():
                     pibot.value = (left_speed, -right_speed)
                     print(time.time() - start_time)
                     print("Still in the loop")
+                motion = "stop"
                 pibot.value = (0, 0)
             left_encoder.reset()
             right_encoder.reset()
