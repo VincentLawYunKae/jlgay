@@ -69,9 +69,9 @@ def handle_mode0():
     flag_new_pid_cycle = True
     while True:
         if motion_queue:
-            print("Enter here to turn the motor", motion_queue)
             motion, dt = motion_queue.pop(0)
             if motion == "turn left":
+                print("handle turn left")
                 set_point = (left_encoder.value + right_encoder.value) / 2
                 pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=turn_speed)
                 pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=turn_speed)
@@ -82,6 +82,7 @@ def handle_mode0():
                     pibot.value = (-left_speed, right_speed)
                 pibot.value = (0, 0)
             elif motion == "turn right":
+                print("handle turn right")
                 set_point = (left_encoder.value + right_encoder.value) / 2
                 pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=turn_speed)
                 pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=turn_speed)
@@ -233,7 +234,6 @@ flask_thread.start()
 
 try:
     while True:
-        print("mode", drive_mode)
         if drive_mode == 0:
             handle_mode0()
         else:
