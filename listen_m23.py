@@ -179,9 +179,9 @@ def set_dt():
 @app.route('/angle')
 def set_angle():
     global motion, motion_queue, dt_right, dt_left
+    dt, motion = float(request.args.get('dt')), request.args.get('motion')
     dt = dt_right if motion == 'turn right' else dt_left
     print(dt)
-    dt, motion = float(request.args.get('dt')), request.args.get('motion')
     motion_queue.append((motion, dt))
     print("The motion now is", motion)
     return motion
