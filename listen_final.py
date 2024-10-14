@@ -147,6 +147,17 @@ def set_linearpid():
     print("Setting Linear PID to ", kp_lin, ki_lin, kd_lin)
     return "Setting Linear PID"
 
+@app.route('/dt')
+def set_dt():
+    global dt_left, dt_right
+    # Try to retrieve the dt_left and dt_right parameters from the GET request
+    print(request.args.get('dt_left'))
+    print(request.args.get('dt_right'))
+    print(type(request.args.get('dt_left')))
+    print(type(request.args.get('dt_right')))
+    dt_left = float(request.args.get('dt_left')) # Default to 0 if not provided
+    dt_right = float(request.args.get('dt_right')) 
+    return str(dt_left) + " " + str(dt_right)
     
 @app.route('/turnpid')
 def set_turnpid():
