@@ -199,8 +199,10 @@ def move():
 
 @app.route('/angle')
 def set_angle():
-    global motion, motion_queue
+    global motion, motion_queue, dt_right, dt_left
     dt, motion = float(request.args.get('dt')), request.args.get('motion')
+    dt = dt_right if motion == 'turn right' else dt_left
+    print(dt)
     motion_queue.append((motion, dt))
     print("The motion now is", motion)
     return motion
@@ -269,6 +271,9 @@ config = picam2.create_preview_configuration(lores={"size": (640,480)})
 picam2.configure(config)
 picam2.start()
 time.sleep(2)
+
+dt_left = 0
+dt_right = 0
 
 # Initialize flask
 def run_flask():
