@@ -174,12 +174,13 @@ def move():
 def set_dt():
     global dt_left, dt_right
     # Try to retrieve the dt_left and dt_right parameters from the GET request
-    print(request.args.get('dt_left'))
-    print(request.args.get('dt_right'))
-    print(type(request.args.get('dt_left')))
-    print(type(request.args.get('dt_right')))
+    # print(request.args.get('dt_left'))
+    # print(request.args.get('dt_right'))
+    # print(type(request.args.get('dt_left')))
+    # print(type(request.args.get('dt_right')))
     dt_left = float(request.args.get('dt_left')) # Default to 0 if not provided
     dt_right = float(request.args.get('dt_right')) 
+    print(f"Reach here to set dt_left as {dt_left} and dt_right as {dt_right}")
     return str(dt_left) + " " + str(dt_right)
 
 @app.route('/angle')
