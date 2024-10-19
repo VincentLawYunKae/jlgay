@@ -109,8 +109,8 @@ def handle_mode1():
                 pibot.value = (0, 0)
             elif motion == "turn left":
                 set_point = (left_encoder.value + right_encoder.value) / 2
-                pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=turn_speed)
-                pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=turn_speed)
+                pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.55,0.75), starting_output=turn_speed)
+                pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.55,0.75), starting_output=turn_speed)
                 start_time = time.time()
                 while (time.time() - start_time) < dt:
                     left_speed = pid_left(left_encoder.value)
@@ -119,8 +119,8 @@ def handle_mode1():
                 pibot.value = (0, 0)
             elif motion == "turn right":
                 set_point = (left_encoder.value + right_encoder.value) / 2
-                pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=turn_speed)
-                pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.65,0.85), starting_output=turn_speed)
+                pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.55,0.75), starting_output=turn_speed)
+                pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.55,0.75), starting_output=turn_speed)
                 start_time = time.time()
                 while (time.time() - start_time) < dt:
                     left_speed = pid_left(left_encoder.value)
@@ -260,7 +260,7 @@ kd_lin = 0.01
 left_speed = 0
 right_speed = 0
 linear_speed = 0.5
-turn_speed = 0.75
+turn_speed = 0.65
 turn_tolerance = 3
 linear_tolerance = 6
 motion = ''
