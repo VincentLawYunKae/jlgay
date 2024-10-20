@@ -84,6 +84,8 @@ def handle_mode0():
                     left_speed = pid_left(left_encoder.value)
                     right_speed = pid_right(right_encoder.value)
                     pibot.value = (-left_speed, right_speed)
+                    print(f"Left speed: {left_speed}, right speed: {right_speed}")
+                    print(f"Left encoder value: {left_encoder.value}, right encoder value: {right_encoder.value}")
                     # print(time.time() - start_time)
                     # print("Still in the loop")
                 motion = "stop"
@@ -99,6 +101,8 @@ def handle_mode0():
                     left_speed = pid_left(left_encoder.value)
                     right_speed = pid_right(right_encoder.value)
                     pibot.value = (left_speed, -right_speed)
+                    print(f"Left speed: {left_speed}, right speed: {right_speed}")
+                    print(f"Left encoder value: {left_encoder.value}, right encoder value: {right_encoder.value}")
                     # print(time.time() - start_time)
                     # print("Still in the loop")
                 motion = "stop"
@@ -173,11 +177,6 @@ def move():
 @app.route('/dt')
 def set_dt():
     global dt_left, dt_right
-    # Try to retrieve the dt_left and dt_right parameters from the GET request
-    # print(request.args.get('dt_left'))
-    # print(request.args.get('dt_right'))
-    # print(type(request.args.get('dt_left')))
-    # print(type(request.args.get('dt_right')))
     dt_left = float(request.args.get('dt_left')) # Default to 0 if not provided
     dt_right = float(request.args.get('dt_right')) 
     print(f"Reach here to set dt_left as {dt_left} and dt_right as {dt_right}")
