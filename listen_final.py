@@ -83,8 +83,8 @@ def handle_mode1():
         finally:
             if motion == "forward":
                 # pid_left = PID(kp_lin, ki_lin, kd_lin, setpoint=right_encoder.value, output_limits=(0.35,0.65), starting_output=linear_speed)
-                pid_right =  PID(kp_lin, ki_lin, kd_lin, setpoint=right_disp, output_limits=(0.45,0.518), starting_output=linear_speed-0.15*linear_speed)
-                pid_left = PID(kp_lin, ki_lin, kd_lin, setpoint=left_disp, output_limits=(0.48,0.515), starting_output=linear_speed+0.15*linear_speed)
+                pid_right =  PID(kp_lin, ki_lin, kd_lin, setpoint=right_disp, output_limits=(0.45,0.518), starting_output=linear_speed-0.18*linear_speed)
+                pid_left = PID(kp_lin, ki_lin, kd_lin, setpoint=left_disp, output_limits=(0.48,0.515), starting_output=linear_speed+0.18*linear_speed)
                 while (left_encoder.value < abs(left_disp) - linear_tolerance) and (right_encoder.value < abs(right_disp) - linear_tolerance):
                     # pid_left.setpoint = right_encoder.value
                     pid_right.setpoint = left_encoder.value
