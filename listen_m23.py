@@ -96,6 +96,9 @@ def handle_mode0():
                 print("handle turn right")
                 # print(type(dt), dt)
                 # set_point = (left_encoder.value + right_encoder.value) / 2
+                pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=1, output_limits=(0.625,0.665), starting_output=turn_speed)
+                pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=1, output_limits=(0.625,0.665), starting_output=turn_speed)
+                start_time = time.time()
                 while (time.time() - start_time) < dt:
                     print("Enter here to give the value to the pid")
                     pid_left.setpoint = max(left_encoder.value, (right_encoder.value+left_encoder.value)/2)
