@@ -97,6 +97,7 @@ def handle_mode0():
                 # print(type(dt), dt)
                 # set_point = (left_encoder.value + right_encoder.value) / 2
                 while (time.time() - start_time) < dt:
+                    print("Enter here to give the value to the pid")
                     pid_left.setpoint = max(left_encoder.value, (right_encoder.value+left_encoder.value)/2)
                     pid_right.setpoint = max(right_encoder.value, (right_encoder.value+left_encoder.value)/2)
                     left_speed = pid_left(left_encoder.value)
