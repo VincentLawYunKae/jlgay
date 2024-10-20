@@ -76,9 +76,9 @@ def handle_mode0():
             if motion == "turn left":
                 print("handle turn left")
                 # print(type(dt), dt)
-                set_point = (left_encoder.value + right_encoder.value) / 2
-                pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.625,0.665), starting_output=turn_speed)
-                pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.625,0.665), starting_output=turn_speed)
+                # set_point = (left_encoder.value + right_encoder.value) / 2
+                pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=1, output_limits=(0.625,0.665), starting_output=turn_speed)
+                pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=1, output_limits=(0.625,0.665), starting_output=turn_speed)
                 start_time = time.time()
                 while (time.time() - start_time) < dt:
                     pid_left.setpoint = max(left_encoder.value, (right_encoder.value+left_encoder.value)/2)
@@ -95,15 +95,15 @@ def handle_mode0():
             elif motion == "turn right":
                 print("handle turn right")
                 # print(type(dt), dt)
-                set_point = (left_encoder.value + right_encoder.value) / 2
-                pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.625,0.665), starting_output=turn_speed)
-                pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=set_point, output_limits=(0.625,0.665), starting_output=turn_speed)
+                # set_point = (left_encoder.value + right_encoder.value) / 2
                 while (time.time() - start_time) < dt:
                     pid_left.setpoint = max(left_encoder.value, (right_encoder.value+left_encoder.value)/2)
                     pid_right.setpoint = max(right_encoder.value, (right_encoder.value+left_encoder.value)/2)
                     left_speed = pid_left(left_encoder.value)
                     right_speed = pid_right(right_encoder.value)
                     pibot.value = (left_speed, -right_speed)
+                    print(f"Left speed: {left_speed}, right speed: {right_speed}")
+                    print(f"Left encoder value: {left_encoder.value}, right encoder value: {right_encoder.value}")
                     print(f"Left speed: {left_speed}, right speed: {right_speed}")
                     print(f"Left encoder value: {left_encoder.value}, right encoder value: {right_encoder.value}")
                     # print(time.time() - start_time)
