@@ -97,8 +97,10 @@ def handle_mode1():
                         counter += 1
                     elif counter < 80:
                         right_speed = linear_speed - 0.08*linear_speed
+                        counter += 1
                     elif counter < 105:
                         right_speed = linear_speed - 0.05*linear_speed
+                        counter += 1
                     else:
                         right_speed = linear_speed
                     # print(f"Speed: {linear_speed}, {right_speed}")
