@@ -55,7 +55,7 @@ def handle_mode1():
                     pid_left.setpoint = max(left_encoder.value, (right_encoder.value+left_encoder.value)/2)
                     # pid_right.setpoint = left_encoder.value
                     # print(f"Setpoint: {left_encoder.value}, {right_encoder.value}")
-                    right_speed = pid_right(right_encoder.value)
+                    # right_speed = pid_right(right_encoder.value)
                     left_speed = pid_left(left_encoder.value)
                     if counter < 80:
                         right_speed = linear_speed - 0.4*linear_speed
