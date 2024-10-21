@@ -159,7 +159,7 @@ def set_linearpid():
     return "Setting Linear PID"
 
 @app.route('/linpidleft')
-def set_linearpid():
+def set_linpidleft():
     global kp_lin_left, ki_lin_left, kd_lin_left
     kp_lin_left, ki_lin_left, kd_lin_left = float(request.args.get('kp')), float(request.args.get('ki')), float(request.args.get('kd'))
     print("Setting Linear LEFT PID to ", kp_lin_left, ki_lin_left, kd_lin_left)
@@ -167,7 +167,7 @@ def set_linearpid():
 
 
 @app.route('/linpidright')
-def set_linearpid():
+def set_linpidright():
     global kp_lin_right, ki_lin_right, kd_lin_right
     kp_lin_right, ki_lin_right, kd_lin_right = float(request.args.get('kp')), float(request.args.get('ki')), float(request.args.get('kd'))
     print("Setting Linear RIGHT PID to ", kp_lin_right, ki_lin_right, kd_lin_right)
