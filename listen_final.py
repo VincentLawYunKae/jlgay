@@ -26,41 +26,6 @@ class Encoder(object):
     @property
     def value(self):
         return self._value
-        
-def handle_mode0():
-    """
-    for self-driving mode
-    """
-    global use_pid, left_speed, right_speed
-    flag_new_pid_cycle = True
-    while True:
-        ### if not using pid, just move the wheels as commanded
-        if not use_pid:
-            pibot.value = (left_speed, right_speed)          
-            # print('Value', left_encoder.value, right_encoder.value)
-        ### with pid, left wheel is set as reference, and right wheel will try to match the encoder counter of left wheel
-        ### pid only runs when robot moves forward or backward. Turning does not use pid
-        else:
-            if (motion == 'stop') or (motion == 'turning'):
-                pibot.value = (left_speed, right_speed) 
-                left_encoder.reset()
-                right_encoder.reset()
-                flag_new_pid_cycle = True          
-            else:
-                left_speed, right_speed = abs(left_speed), abs(right_speed)
-                if flag_new_pid_cycle:
-                    pid_right = PID(kp_lin, ki_lin, kd_lin, setpoint=left_encoder.value, output_limits=(0,1), starting_output=right_speed)
-                    flag_new_pid_cycle = False
-                pid_right.setpoint = left_encoder.value
-                right_speed = pid_right(right_encoder.value)
-                if motion == 'forward': pibot.value = (left_speed, right_speed)
-                else: pibot.value = (-left_speed, -right_speed)
-                print('Value', left_encoder.value, right_encoder.value)
-                # print('Value', left_encoder.value, right_encoder.value)
-                # print('Speed', left_speed, right_speed)
-        time.sleep(0.005)
-        if drive_mode == 1:
-            break
 
 
 def handle_mode1():
@@ -92,19 +57,20 @@ def handle_mode1():
                     # print(f"Setpoint: {left_encoder.value}, {right_encoder.value}")
                     # right_speed = pid_right(right_encoder.value)
                     left_speed = pid_left(left_encoder.value)
-                    if counter < 80:
-                        right_speed = linear_speed - 0.4*linear_speed
+                    if counter < 70:
+                        right_speed = linear_speed - 0.35*linear_speed
                         counter += 1
-                    elif counter < 120:
-                        right_speed = linear_speed - 0.3*linear_speed
+                    elif counter < 100:
+                        right_speed = linear_speed - 0.25*linear_speed
                         counter += 1
-                    elif counter < 150:
-                        right_speed = linear_speed - 0.15*linear_speed
+                    elif counter < 125:
+                        right_speed = linear_speed - 0.1*linear_speed
                         counter += 1
                     else:
                         right_speed = linear_speed
                     # print(f"Speed: {linear_speed}, {right_speed}")
                     # pibot.value = (linear_speed, right_speed)
+                    print(f"Encoder: {left_encoder.value}, {right_encoder.value}")
                     print(f"Speed: {left_speed}, {right_speed}")
                     pibot.value = (left_speed, right_speed)
                 pibot.value = (0, 0)
@@ -149,15 +115,6 @@ def handle_mode1():
         time.sleep(0.05)
         if drive_mode == 0:
             break
-
-# main function to control the robot wheels
-def move_robot():
-    # print("mode", drive_mode)
-    if drive_mode == 0:
-        handle_mode0()
-    else:
-        # print("motion", motion)
-        handle_mode1()
     
 @app.route('/linearpid')
 def set_linearpid():
@@ -327,10 +284,8 @@ flask_thread.start()
 
 try:
     while True:
-        if drive_mode == 0:
-            handle_mode0()
-        else:
-            handle_mode1()
+        handle_mode1()
+        
 except KeyboardInterrupt:
     pibot.stop()
     picam2.stop()
