@@ -85,20 +85,20 @@ def handle_mode1():
             counter = 0
             if motion == "forward":
                 pid_right =  PID(kp_lin_right, ki_lin_right, kd_lin_right, setpoint=right_disp, output_limits=(0.475,0.518), starting_output=linear_speed-0.1*linear_speed)
-                # pid_left = PID(kp_lin_left, ki_lin_left, kd_lin_left, setpoint=left_disp, output_limits=(0.475,0.51), starting_output=linear_speed+0.1*linear_speed)
+                pid_left = PID(kp_lin_left, ki_lin_left, kd_lin_left, setpoint=left_disp, output_limits=(0.475,0.51), starting_output=linear_speed+0.1*linear_speed)
                 while (left_encoder.value < abs(left_disp) - linear_tolerance) and (right_encoder.value < abs(right_disp) - linear_tolerance):
-                    # pid_left.setpoint = right_encoder.value
+                    pid_left.setpoint = right_encoder.value
                     pid_right.setpoint = left_encoder.value
                     # print(f"Setpoint: {left_encoder.value}, {right_encoder.value}")
                     right_speed = pid_right(right_encoder.value)
-                    # left_speed = pid_left(left_encoder.value)
-                    # print(f"Speed: {left_speed}, {right_speed}")
-                    # pibot.value = (left_speed, right_speed)
+                    left_speed = pid_left(left_encoder.value)
                     if counter < 100:
                         right_speed = linear_speed - 0.4*linear_speed
                         counter += 1
-                    print(f"Speed: {linear_speed}, {right_speed}")
-                    pibot.value = (linear_speed, right_speed)
+                    # print(f"Speed: {linear_speed}, {right_speed}")
+                    # pibot.value = (linear_speed, right_speed)
+                    print(f"Speed: {left_speed}, {right_speed}")
+                    pibot.value = (left_speed, right_speed)
                 pibot.value = (0, 0)
             elif motion == "backward":
                 pid_left = PID(kp_lin, ki_lin, kd_lin, setpoint=left_disp, output_limits=(0.48,0.52), starting_output=linear_speed)
