@@ -92,8 +92,8 @@ def handle_mode1():
                     # print(f"Setpoint: {left_encoder.value}, {right_encoder.value}")
                     right_speed = pid_right(right_encoder.value)
                     left_speed = pid_left(left_encoder.value)
-                    if counter < 90:
-                        right_speed = linear_speed - 0.35*linear_speed
+                    if counter < 100:
+                        right_speed = linear_speed - 0.4*linear_speed
                         counter += 1
                     # print(f"Speed: {linear_speed}, {right_speed}")
                     # pibot.value = (linear_speed, right_speed)
