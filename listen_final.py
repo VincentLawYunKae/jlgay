@@ -49,14 +49,14 @@ def handle_mode1():
         finally:
             counter = 0
             if motion == "forward":
-                # pid_right =  PID(kp_lin_right, ki_lin_right, kd_lin_right, setpoint=right_disp, output_limits=(0.41,0.44), starting_output=linear_speed-0.1*linear_speed)
-                pid_left = PID(kp_lin_left, ki_lin_left, kd_lin_left, setpoint=left_disp, output_limits=(0.3,0.52), starting_output=linear_speed+0.1*linear_speed)
+                pid_right =  PID(kp_lin_right, ki_lin_right, kd_lin_right, setpoint=right_disp, output_limits=(0.4,0.428), starting_output=linear_speed-0.1*linear_speed)
+                # pid_left = PID(kp_lin_left, ki_lin_left, kd_lin_left, setpoint=left_disp, output_limits=(0.28,0.52), starting_output=linear_speed+0.1*linear_speed)
                 while (left_encoder.value < abs(left_disp) - linear_tolerance) and (right_encoder.value < abs(right_disp) - linear_tolerance):
-                    pid_left.setpoint = max(left_encoder.value, (right_encoder.value+left_encoder.value)/2)
-                    # pid_right.setpoint = left_encoder.value
+                    # pid_left.setpoint = max(left_encoder.value, (right_encoder.value+left_encoder.value)/2)
+                    pid_right.setpoint = max(left_encoder.value, (right_encoder.value+left_encoder.value)/2)
                     # print(f"Setpoint: {left_encoder.value}, {right_encoder.value}")
-                    # right_speed = pid_right(right_encoder.value)
-                    left_speed = pid_left(left_encoder.value)
+                    right_speed = pid_right(right_encoder.value)
+                    # left_speed = pid_left(left_encoder.value)
                     if counter < 80:
                         right_speed = linear_speed - 0.4*linear_speed
                         counter += 1
@@ -70,12 +70,12 @@ def handle_mode1():
                         right_speed = linear_speed - 0.1*linear_speed
                         counter += 1
                     else:
-                        right_speed = linear_speed
-                    # print(f"Speed: {linear_speed}, {right_speed}")
-                    # pibot.value = (linear_speed, right_speed)
+                        right_speed = right_speed
+                    print(f"Speed: {linear_speed}, {right_speed}")
+                    pibot.value = (linear_speed, right_speed)
                     print(f"Encoder: {left_encoder.value}, {right_encoder.value}")
-                    print(f"Speed: {left_speed}, {right_speed}")
-                    pibot.value = (left_speed, right_speed)
+                    # print(f"Speed: {left_speed}, {right_speed}")
+                    # pibot.value = (left_speed, right_speed)
                 pibot.value = (0, 0)
             elif motion == "backward":
                 pid_left = PID(kp_lin, ki_lin, kd_lin, setpoint=left_disp, output_limits=(0.48,0.52), starting_output=linear_speed)
