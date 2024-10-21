@@ -68,6 +68,7 @@ def handle_mode1():
     for waypoint navigation
     """
     global motion_queue, kp_lin, ki_lin, kd_lin, kp_turn, ki_turn, kd_turn, turn_tolerance, linear_tolerance
+    global kp_lin_right, ki_lin_right,kd_lin_right, kp_lin_left, ki_lin_left, kd_lin_left
     while True:
         # print("motion", motion)
         try:
@@ -83,9 +84,8 @@ def handle_mode1():
         finally:
             counter = 0
             if motion == "forward":
-                # pid_left = PID(kp_lin, ki_lin, kd_lin, setpoint=right_encoder.value, output_limits=(0.35,0.65), starting_output=linear_speed)
-                pid_right =  PID(kp_lin, ki_lin, kd_lin, setpoint=right_disp, output_limits=(0.475,0.518), starting_output=linear_speed-0.1*linear_speed)
-                # pid_left = PID(kp_lin, ki_lin, kd_lin, setpoint=left_disp, output_limits=(0.475,0.51), starting_output=linear_speed+0.1*linear_speed)
+                pid_right =  PID(kp_lin_right, ki_lin_right, kd_lin_right, setpoint=right_disp, output_limits=(0.475,0.518), starting_output=linear_speed-0.1*linear_speed)
+                # pid_left = PID(kp_lin_left, ki_lin_left, kd_lin_left, setpoint=left_disp, output_limits=(0.475,0.51), starting_output=linear_speed+0.1*linear_speed)
                 while (left_encoder.value < abs(left_disp) - linear_tolerance) and (right_encoder.value < abs(right_disp) - linear_tolerance):
                     # pid_left.setpoint = right_encoder.value
                     pid_right.setpoint = left_encoder.value
@@ -157,6 +157,21 @@ def set_linearpid():
     kp_lin, ki_lin, kd_lin = float(request.args.get('kp')), float(request.args.get('ki')), float(request.args.get('kd'))
     print("Setting Linear PID to ", kp_lin, ki_lin, kd_lin)
     return "Setting Linear PID"
+
+@app.route('/linpidleft')
+def set_linearpid():
+    global kp_lin_left, ki_lin_left, kd_lin_left
+    kp_lin_left, ki_lin_left, kd_lin_left = float(request.args.get('kp')), float(request.args.get('ki')), float(request.args.get('kd'))
+    print("Setting Linear LEFT PID to ", kp_lin_left, ki_lin_left, kd_lin_left)
+    return "Setting Linear LEFT PID"
+
+
+@app.route('/linpidright')
+def set_linearpid():
+    global kp_lin_right, ki_lin_right, kd_lin_right
+    kp_lin_right, ki_lin_right, kd_lin_right = float(request.args.get('kp')), float(request.args.get('ki')), float(request.args.get('kd'))
+    print("Setting Linear RIGHT PID to ", kp_lin_right, ki_lin_right, kd_lin_right)
+    return "Setting Linear RIGHT PID"
 
 @app.route('/dt')
 def set_dt():
@@ -266,6 +281,14 @@ kd_turn = 0.001
 kp_lin = 2
 ki_lin = 0.05
 kd_lin = 0.01
+
+kp_lin_left = 0.6
+ki_lin_left = 0.0001
+kd_lin_left = 0.0005
+kp_lin_right = 0.6
+ki_lin_right = 0.0001
+kd_lin_right = 0.0005
+
 left_speed = 0
 right_speed = 0
 linear_speed = 0.5
