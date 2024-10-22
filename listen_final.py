@@ -49,7 +49,7 @@ def handle_mode1():
         finally:
             counter = 0
             if motion == "forward":
-                pid_right =  PID(kp_lin_right, ki_lin_right, kd_lin_right, setpoint=right_disp, output_limits=(0.35,0.44), starting_output=linear_speed-0.1*linear_speed)
+                pid_right =  PID(kp_lin_right, ki_lin_right, kd_lin_right, setpoint=right_disp, output_limits=(0.362,0.452), starting_output=linear_speed-0.1*linear_speed)
                 # pid_left = PID(kp_lin_left, ki_lin_left, kd_lin_left, setpoint=left_disp, output_limits=(0.28,0.52), starting_output=linear_speed+0.1*linear_speed)
                 while (left_encoder.value < abs(left_disp) - linear_tolerance) and (right_encoder.value < abs(right_disp) - linear_tolerance):
                     # pid_left.setpoint = max(left_encoder.value, (right_encoder.value+left_encoder.value)/2)
@@ -57,14 +57,14 @@ def handle_mode1():
                     # print(f"Setpoint: {left_encoder.value}, {right_encoder.value}")
                     right_speed = pid_right(right_encoder.value)
                     # left_speed = pid_left(left_encoder.value)
-                    if counter < 80:
+                    if counter < 50:
+                        right_speed = linear_speed - 0.4*linear_speed
+                        counter += 1
+                    elif counter < 80:
                         right_speed = linear_speed - 0.35*linear_speed
                         counter += 1
                     elif counter < 100:
-                        right_speed = linear_speed - 0.25*linear_speed
-                        counter += 1
-                    elif counter < 125:
-                        right_speed = linear_speed - 0.15*linear_speed
+                        right_speed = linear_speed - 0.2*linear_speed
                         counter += 1
                     elif counter < 145:
                         right_speed = linear_speed - 0.1*linear_speed
