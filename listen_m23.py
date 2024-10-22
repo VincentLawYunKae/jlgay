@@ -74,7 +74,7 @@ def handle_mode0():
             motion, dt = motion_queue.pop(0)
             # print("motion_queue after popping", motion_queue)
             if motion == "turn left":
-                print("handle turn left")
+                print("handle turn left with dt", dt_left)
                 # print(type(dt), dt)
                 # set_point = (left_encoder.value + right_encoder.value) / 2
                 pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=1, output_limits=(0.625,0.665), starting_output=turn_speed)
@@ -93,7 +93,7 @@ def handle_mode0():
                 motion = "stop"
                 pibot.value = (0, 0)
             elif motion == "turn right":
-                print("handle turn right")
+                print("handle turn right with dt", dt_right)
                 # print(type(dt), dt)
                 # set_point = (left_encoder.value + right_encoder.value) / 2
                 pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=1, output_limits=(0.625,0.665), starting_output=turn_speed)

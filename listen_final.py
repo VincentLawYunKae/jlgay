@@ -33,7 +33,7 @@ def handle_mode1():
     for waypoint navigation
     """
     global motion_queue, kp_lin, ki_lin, kd_lin, kp_turn, ki_turn, kd_turn, turn_tolerance, linear_tolerance
-    global kp_lin_right, ki_lin_right,kd_lin_right, kp_lin_left, ki_lin_left, kd_lin_left
+    global kp_lin_right, ki_lin_right,kd_lin_right, kp_lin_left, ki_lin_left, kd_lin_left, dt_left, dt_right
     while True:
         # print("motion", motion)
         try:
@@ -94,6 +94,7 @@ def handle_mode1():
                 pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=1, output_limits=(0.625,0.665), starting_output=turn_speed)
                 pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=1, output_limits=(0.625,0.665), starting_output=turn_speed)
                 start_time = time.time()
+                print(f"Turn left with dt: {dt_left}")
                 while (time.time() - start_time) < dt_left:
                     pid_left.setpoint = max(left_encoder.value, (right_encoder.value+left_encoder.value)/2)
                     pid_right.setpoint = max(right_encoder.value, (right_encoder.value+left_encoder.value)/2)
@@ -106,6 +107,7 @@ def handle_mode1():
                 pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=1, output_limits=(0.625,0.665), starting_output=turn_speed)
                 pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=1, output_limits=(0.625,0.665), starting_output=turn_speed)
                 start_time = time.time()
+                print(f"Turn right with dt: {dt_right}")
                 while (time.time() - start_time) < dt_right:
                     pid_left.setpoint = max(left_encoder.value, (right_encoder.value+left_encoder.value)/2)
                     pid_right.setpoint = max(right_encoder.value, (right_encoder.value+left_encoder.value)/2)
@@ -141,16 +143,13 @@ def set_linpidright():
     print("Setting Linear RIGHT PID to ", kp_lin_right, ki_lin_right, kd_lin_right)
     return "Setting Linear RIGHT PID"
 
+
 @app.route('/dt')
 def set_dt():
     global dt_left, dt_right
-    # Try to retrieve the dt_left and dt_right parameters from the GET request
-    print(request.args.get('dt_left'))
-    print(request.args.get('dt_right'))
-    print(type(request.args.get('dt_left')))
-    print(type(request.args.get('dt_right')))
     dt_left = float(request.args.get('dt_left')) # Default to 0 if not provided
     dt_right = float(request.args.get('dt_right')) 
+    print(f"Reach here to set dt_left as {dt_left} and dt_right as {dt_right}")
     return str(dt_left) + " " + str(dt_right)
     
 @app.route('/turnpid')
