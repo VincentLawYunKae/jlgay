@@ -80,7 +80,7 @@ def handle_mode0():
                 pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=1, output_limits=(0.625,0.665), starting_output=turn_speed)
                 pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=1, output_limits=(0.625,0.665), starting_output=turn_speed)
                 start_time = time.time()
-                while (time.time() - start_time) < dt:
+                while (time.time() - start_time) < dt_left:
                     pid_left.setpoint = max(left_encoder.value, (right_encoder.value+left_encoder.value)/2)
                     pid_right.setpoint = max(right_encoder.value, (right_encoder.value+left_encoder.value)/2)
                     left_speed = pid_left(left_encoder.value)
@@ -99,7 +99,7 @@ def handle_mode0():
                 pid_left = PID(kp_turn, ki_turn, kd_turn, setpoint=1, output_limits=(0.625,0.665), starting_output=turn_speed)
                 pid_right = PID(kp_turn, ki_turn, kd_turn, setpoint=1, output_limits=(0.625,0.665), starting_output=turn_speed)
                 start_time = time.time()
-                while (time.time() - start_time) < dt:
+                while (time.time() - start_time) < dt_right:
                     print("Enter here to give the value to the pid")
                     pid_left.setpoint = max(left_encoder.value, (right_encoder.value+left_encoder.value)/2)
                     pid_right.setpoint = max(right_encoder.value, (right_encoder.value+left_encoder.value)/2)
